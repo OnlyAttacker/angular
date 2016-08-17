@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>angularjs demo</title>
+	<style type="text/css">
+		body,html{margin:0px;padding:0px;}
+	</style>
+</head>
+
+<body ng-app="app">
+<div ng-controller='login'>
+	<form  name="loginForm"  ng-show='login_show' style="margin: 100px auto;width: 300px;padding: 20px 50px;border-radius: 10px;" class="bg-info">
+		<h3 class="text-center">登录</h3>
+		<div class="form-group">
+			<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+			<input ng-model='username' name="username" type="text" required />
+			<span ng-show="loginForm.username.$invalid && loginForm.username.$dirty" style="color: red;">帐号不能为空</span>
+		</div>
+		<div class="form-group">
+			<span class="glyphicon glyphicon-th" aria-hidden="true"></span>
+			<input ng-model='password' name="password" type="password" required />
+			<span ng-show="loginForm.password.$invalid && loginForm.password.$dirty" style="color: red;">密码不能为空</span>
+		</div>
+		<div class="form-group">
+			<div class="text-center">
+	  			<button type="submit" class="btn btn-primary" ng-click="login()">Sign in</button>
+			</div>
+		</div>
+	</form>
+	<div ng-if="!login_show">hello {{username}}</div>
+</div>
+
+<link rel="stylesheet" href="./vendor/bootstrap-3.3.5-dist/css/bootstrap.min.css">
+<script src="./vendor/jquery-3.1.0/jquery-3.1.0.min.js"></script>
+<script src="./vendor/jquery-3.1.0/jquery-migrate-1.4.1.min.js"></script>
+<script src="./vendor/bootstrap-3.3.5-dist/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="./vendor/angularjs/angular.min.js"></script>
+<script type="text/javascript">
+	var app = angular.module("app",[]);		
+	app.controller('login',['$scope','$rootScope',function($scope,$rootScope){
+		$scope.login_show = true;
+		$scope.login = function(){
+			$rootScope.username = $scope.username;
+			$rootScope.password = $scope.password;
+			$scope.login_show = false;
+		}
+	}]);
+
+</script>
+</body>
+</html>
