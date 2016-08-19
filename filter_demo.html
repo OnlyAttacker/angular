@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+<meta charset="utf-8">
+	<script type="text/javascript" src="./vendor/angularjs/angular.min.js"></script>
+  <title>angularjs</title>
+</head>
+<body ng-controller="main">
+ {{date | datetime_format}}
+ <script type="text/javascript">
+ 	/*
+		fillter 有个潜在的bug 就是 一个月按照30天算的。一年按照366天算的
+ 	*/
+ 	var app = angular.module('app',[]);
+ 	app.filter('datetime_format',function(){
+ 		return  function(datetime){
+		 	var current_datetime = +new Date()/1000;
+	        var datetime = +new Date(datetime)/1000;
+	        var minutes = Math.floor((current_datetime - datetime) / 60);
+			if(minutes < 60){
+				if(minutes <= 0) minutes = 1;
+				return minutes+"分钟前";
+			}else if(minutes >= 60 && minutes < 60*24){
+				var hours = Math.floor((current_datetime - datetime) / (60*60));
+				if(hours <= 0) hours = 1;
+				return hours+"小时前";
+			}if(minutes >= 60*24 && minutes < 60*24 * 30){
+			    var days = Math.floor((current_datetime - datetime) / (60*60*24));
+			    if(days <= 0) days = 1;
+			    return days+'天前';
+			}else if(minutes >= 60*24 * 30 && minutes < 60*24*366){
+			    var months = Math.floor((current_datetime - datetime) / (60*60*24*30));//这里一个月按30天计算
+			    if(months <= 0) months = 1;
+			    return months+'个月前';
+			}else{
+				var years = Math.floor((current_datetime - datetime) / (60*60*24*366));//这里一个月按30天计算
+			    if(years <= 0) years = 1;
+			    return years+'年前';
+			}
+		}
+ 	})
+ 	app.controller('main',['$scope',function($scope){
+ 		$scope.date = '2016-08-19 16:30:22';
+ 	}]);
+
+ </script>
+</body>
+</html>
+
