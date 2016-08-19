@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html ng-app="app" lang="en">
+<head>
+	<base href="/">			<!--注意点 1 -->
+	<meta charset="UTF-8">
+	<title>angularjs demo</title>
+	<style type="text/css">
+		body,html{margin:0px;padding:0px;}
+	</style>
+</head>
+
+<body >
+<a href="/route/route1">路由1</a><!--注意点 2 -->
+<a href="/route/route2">路由2</a><!--注意点 2 -->
+<div ng-view></div><!--注意点 3 -->
+
+<h3 style="color:red;">由于刷新时，请求服务器上的路由文件 所以会提示找不到文件，这是应该使用服务器的url重写模块，重新定位到入口文件</h3>
+<p>
+apache重写 文件名为.htaccess 内容如下：<br>
+RewriteEngine On<br>
+RewriteCond %{REQUEST_FILENAME} !-f<br>
+RewriteCond %{REQUEST_FILENAME} !(\.(ico|gif|jpg|png|bmp|swf|css|js))<br>
+RewriteRule .*route.* /route_demo.html<br>
+
+</p>
+<script type="text/javascript" src="./vendor/angularjs/angular.min.js"></script><!--注意点 4 -->
+<script type="text/javascript" src="./vendor/angularjs/angular-route.min.js"></script><!--注意点 4 -->
+
+<script type="text/javascript">
+var app = angular.module("app",['ngRoute']);				// 注意点 5 使用ngRoute模块
+app.config(function ($routeProvider,$locationProvider) {	// 注意点 6 配置app.config
+	$locationProvider.html5Mode(true);						// 注意点 7 使用html5Mode 来去掉url上的#
+    $routeProvider.when("/route/route1", {					// 注意点 8 定义路由规则
+        templateUrl: "/views/route1.html",					// 注意点 9 使用的html文件 放在/views/route1.html
+        controller: "route1"								// 注意点 10 使用的控制器 route1
+    }).when("/route/route2", {
+        templateUrl: "/views/route2.html",
+        controller: "route2"
+    }).otherwise({
+        template: "404 Not Found"
+    });
+});
+	
+app.controller('route1',['$scope',function($scope){			// 注意点 11 定义控制器
+	$scope.title = "this is route 1";
+}]);
+app.controller('route2',['$scope',function($scope){
+	$scope.title = "this is route 2";
+}]);
+
+</script>
+</body>
+</html>
