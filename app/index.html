@@ -1,11 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<title>angularjs</title>
-	<script type="text/javascript" data-main="scripts/main" src="vendor/requirejs/require.js"></script>
+    <base href="/">            <!--注意点 1 -->
+    <meta charset="UTF-8">
+    <title>angularjs demo</title>
+    <style type="text/css">
+        body,html{margin:0px;padding:0px;}
+    </style>
 </head>
-<body>
-	
+<body >
+<a href="/views1">路由1</a><!--注意点 2 -->
+<a href="/views2">路由2</a><!--注意点 2 -->
+<div ng-view></div><!--注意点 3 -->
+<script src="/vendor/requirejs/require.js" data-main="/scripts/main.js"></script>
 </body>
 </html>
+
+	
