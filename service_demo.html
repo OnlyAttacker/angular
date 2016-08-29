@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+<meta charset="utf-8">
+	<script type="text/javascript" src="./vendor/angularjs/angular.min.js"></script>
+  <title>angularjs</title>
+</head>
+<body ng-controller="main">
+	{{test}}
+ <script type="text/javascript">
+ 	var app = angular.module('app',[]);
+
+ 	//用  Factory 就是创建一个对象，为它添加属性，然后把这个对象返回出来
+ 	app.factory('user',function(){
+ 		var _users = [
+ 			{'name':'gaojiahao','phone':'18888888888'},
+ 			{'name':'gao','phone':'188888888888'}
+ 		];
+
+ 		var service = {};
+ 		this.getUsers = function(){
+ 			return _users;
+ 		}
+
+ 		return this;
+ 	});
+
+ 	//用 Service 就是定义一个构造方法，最终在引入时angular会以new Function()的形式引入
+ 	app.service('book',function(){
+ 			var _books = [
+ 				{'name':'钢铁是怎样练成的','price':'30'},
+ 				{'name':'红楼梦','price':'20'}
+ 			];
+ 			this.getBooks = function (){
+ 				return _books;
+ 			}
+ 			return this;
+ 	})
+
+ 	//Provider  是唯一一种你可以传进 .config() 函数的 service。当你想要在 service 对象启用之前，先进行模块范围的配置，那就应该用 provider。provider的返回值跟factory一样，返回一个对象，但其有一定的格式，就是构造函数中$get方法时返回的对象。
+ 	app.provider('phone',function(){
+ 		this.phone = '';
+ 		this.$get = function(){
+ 			var self = this;
+ 			return {
+ 				getPhone : function(){
+ 					return self.phone;
+ 				}
+ 			}
+ 		}
+ 	})
+
+ 	//在app.config时 需要在定义provider的后面再加上Provider
+ 	app.config(function(phoneProvider){
+ 		phoneProvider.phone = 'this is apple phone';
+ 	});
+
+ 	app.controller('main',['$scope','user',function($scope,user){
+ 		$scope.test = 'test';
+ 		console.log(user.getUsers());
+ 	}]);
+
+ </script>
+</body>
+</html>
+
